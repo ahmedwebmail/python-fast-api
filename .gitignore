@@ -1,3 +1,4 @@
 .idea
 error.log
 debug.log
+.venv

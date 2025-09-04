@@ -1,27 +1,17 @@
 from fastapi import FastAPI
-from enum import Enum
+from pydantic import BaseModel
 
 app = FastAPI()
 
+class User(BaseModel):
+    id: int
+    name: str
+    age: int
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+@app.get("/health")
+def health():
+    return {"ok": True}
 
-food_items = {
-    'indian': ["Dosa", "Samosa", "Chana"],
-    'amrican': ["Pizza", "Burger", "Hot dog"],
-    'itlian': ["Pasta", "Noodle", "Soup"]
-}
-
-class AvailableFoodItem(str, Enum):
-    indian = "indian",
-    amrican = "amrican",
-    itlian = "itlian"
-
-@app.get("/get-item/{cuisine}")
-async def get_single_item(cuisine: AvailableFoodItem):
-    # items = food_items.get(cuisine)
-    # if not items:
-    #     return f"{cuisine} not found"
-    return food_items.get(cuisine)
+@app.post("/add-user")
+def create_user(user: User):
+    return {"got": user}
